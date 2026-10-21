@@ -1,0 +1,8 @@
+langchain
+dotenv
+langchain-groq
+langchain-community
+langgraph # for saving memory
+pydantic
+
+#pip install -r requirements.txt
