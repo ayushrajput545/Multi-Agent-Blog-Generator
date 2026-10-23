@@ -3,9 +3,15 @@ from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 
 # Get LLM
-def get_llm(model_name:str="openai/gpt-oss-20b", temperature:float=0.5):
-    apikey = os.getenv('GROQ_API_KEY')
-    llm = ChatGroq(model=model_name, temperature=temperature, apikey=apikey)
+def get_llm(model_name: str = "openai/gpt-oss-20b", temperature: float = 0.5):
+    apikey = os.getenv("GROQ_API_KEY")
+
+    llm = ChatGroq(
+        model=model_name,
+        temperature=temperature,
+        api_key=apikey
+    )
+
     return llm
 
 
@@ -32,7 +38,7 @@ RESEARCHER_PROMPT = ChatPromptTemplate.from_messages([
 def research_agent(llm:ChatGroq , topic:str , audience:str , feedback:str=""):
     revision_hits = f"The human provided this feedback on your previous research- {feedback} please address it."
     if not feedback:
-        revision_hints="This is your first attempt"
+        revision_hits="This is your first attempt"
 
     chain = RESEARCHER_PROMPT | llm
 

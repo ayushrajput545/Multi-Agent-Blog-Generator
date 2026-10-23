@@ -2,6 +2,9 @@
 from state import BlogState
 from agent import research_agent , get_llm , writer_agent , editor_agent
 from langgraph.types import interrupt , Command
+from typing import Literal
+from langgraph.graph import StateGraph , START , END
+from langgraph.checkpoint.memory import InMemorySaver
  
 
 MAX_REVISION=3
@@ -97,5 +100,43 @@ def editor_node(state:BlogState)->BlogState:
     state.final_blog=final
     return state
 
+
+
+# CONDTIONAL ROUTE EDGES (for HITL) -> Decided on which node , we redirect after feedback
+def route_after_research_review(state:BlogState)->Literal["research","writer"]: #
+    if state.researcher_feedback:
+        return "research" #redirect to research node again if feedback present
+    else:
+        return "writer"
+
+def route_after_draft_review(state:BlogState)->Literal["writer","editor"]:
+    if state.draft_feedback and state.revision_count < MAX_REVISION: 
+        return "writer"
+    else:
+        return "editor"
+
+# Build and compile the graph
+def build_blog_graph():
+    builder = StateGraph(BlogState)
+
+    # Add nodes
+    builder.add_node("research",researcher_node)
+    builder.add_node("review_research",human_review_research_node)
+    builder.add_node("writer", writer_node)
+    builder.add_node("review_draft",human_review_draft_node)
+    builder.add_node("editor",editor_node)
+
+    # EDGES
+    builder.add_edge(START , "research")
+    builder.add_edge("research" , "review_research")
+    builder.add_conditional_edges("review_research", route_after_research_review)
+    builder.add_edge("writer" , "review_draft")
+    builder.add_conditional_edges("review_draft", route_after_draft_review)
+    builder.add_edge("editor",END)
+
+
+    # compile
+    GRAPH = builder.compile(checkpointer=InMemorySaver())
+    return GRAPH
 
 
