@@ -30,7 +30,7 @@ RESEARCHER_PROMPT = ChatPromptTemplate.from_messages([
 
 
 def research_agent(llm:ChatGroq , topic:str , audience:str , feedback:str=""):
-    revision_hits = f"The human provided this feedback on your previous research- please address it."
+    revision_hits = f"The human provided this feedback on your previous research- {feedback} please address it."
     if not feedback:
         revision_hints="This is your first attempt"
 
