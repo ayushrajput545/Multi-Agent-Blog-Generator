@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-class BlogState:
+class BlogState(BaseModel):
     # User Input
     topic:str=""
     audience:str="general reader"

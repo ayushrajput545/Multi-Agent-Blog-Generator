@@ -111,7 +111,7 @@ EDITOR_PROMPT = ChatPromptTemplate.from_messages([
 
 def editor_agent(llm:ChatGroq , topic:str , draft:str):
 
-    chain = WRITER_PROMPT | llm
+    chain = EDITOR_PROMPT | llm
 
     result = chain.invoke({
         "topic":topic,
