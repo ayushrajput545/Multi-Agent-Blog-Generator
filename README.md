@@ -2,13 +2,6 @@
 
 Multi-Agent Blog Generator uses a coordinated set of language-model agents to research a topic, draft a blog post, and polish the result. A person reviews the research and the draft at workflow pauses before the final version is produced.
 
-## Agent design and screenshots
-
-> **Screenshot placeholder:** Add a screenshot of the agent design or workflow here when it is available.
->
-> To include it, save the image as `docs/images/agent-design.png` and replace this placeholder with:
-> `![Multi-Agent Blog Generator design](docs/images/agent-design.png)`
-
 ## Overview
 
 The project is a Python/Jupyter notebook prototype. Its end-to-end example is [`app.ipynb`](./app.ipynb), which builds and invokes the LangGraph workflow. It is not currently a web application or command-line application.
